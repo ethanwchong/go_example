@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 	"videoproject/entity"
 	"videoproject/service"
 	"videoproject/validators"
@@ -13,6 +14,8 @@ import (
 type VideoController interface {
 	FindAll() []entity.Video
 	Save(ctx *gin.Context) error
+	Update(ctx *gin.Context) error
+	Delete(ctx *gin.Context) error
 	ShowAll(ctx *gin.Context)
 }
 
@@ -45,6 +48,38 @@ func (c *videoController) Save(ctx *gin.Context) error {
 		return err
 	}
 	c.videoService.Save(video)
+	return nil
+}
+
+func (c *videoController) Update(ctx *gin.Context) error {
+	var video entity.Video
+	err := ctx.ShouldBindJSON(&video)
+	if err != nil {
+		return err
+	}
+
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		return err
+	}
+	video.ID = id
+
+	err = validate.Struct(video)
+	if err != nil {
+		return err
+	}
+	c.videoService.Update(video)
+	return nil
+
+}
+func (c *videoController) Delete(ctx *gin.Context) error {
+	var video entity.Video
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		return err
+	}
+	video.ID = id
+	c.videoService.Delete(video)
 	return nil
 }
 
