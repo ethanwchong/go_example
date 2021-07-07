@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"videoproject/controller"
 	"videoproject/middleware"
 	"videoproject/repository"
@@ -40,7 +41,7 @@ func main() {
 
 	server.Static("/css", "./templates/css")
 
-	server.LoadHTMLGlob("../templates/*.html")
+	server.LoadHTMLGlob("./templates/*.html")
 
 	// Login Endpoint: Authentication + Token creation
 	server.POST("/login", func(ctx *gin.Context) {
@@ -99,7 +100,16 @@ func main() {
 		viewRoutes.GET("/videos", videoController.ShowAll)
 	}
 
-	server.Run("127.0.0.1:8080")
+	// We can setup this env variable from the EB console
+	port := os.Getenv("PORT")
+	// Elastic Beanstalk forwards requests to port 5000
+	if port == "" {
+		port = "8080"
+	}
+	server.Run(":" + port)
+
+	//server.Run("127.0.0.1:8080")
+
 	fmt.Println("Server is Running!")
 
 }
