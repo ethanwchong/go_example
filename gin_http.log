@@ -1,0 +1,21 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] Loaded HTML Templates (4): 
+	- 
+	- footer.html
+	- header.html
+	- index.html
+
+[GIN-debug] POST   /login                    --> main.main.func1 (3 handlers)
+[GIN-debug] GET    /api/videos               --> main.main.func2 (4 handlers)
+[GIN-debug] POST   /api/videos               --> main.main.func3 (4 handlers)
+[GIN-debug] PUT    /api/videos/:id           --> main.main.func4 (4 handlers)
+[GIN-debug] DELETE /api/videos/:id           --> main.main.func5 (4 handlers)
+[GIN-debug] GET    /view/videos              --> videoproject/controller.VideoController.ShowAll-fm (3 handlers)
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2021/07/12 - 13:12:58 | 200 |     31.9155ms |             ::1 | GET      "/view/videos"
+[GIN] 2021/07/12 - 13:13:00 | 404 |            0s |             ::1 | GET      "/favicon.ico"

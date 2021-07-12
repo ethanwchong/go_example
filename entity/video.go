@@ -12,8 +12,8 @@ type Person struct {
 
 type Video struct {
 	ID          uint64    `json:"id" gorm:"primary_key;auto_increment"`
-	Title       string    `json:"title" binding:"min=2,max=200" validate:"is-cool" gorm:"type:varchar(100)"`
-	Description string    `json:"description" binding:"max=200" gorm:"type:varchar(200)"`
+	Title       string    `json:"title" binding:"min=2,max=500" gorm:"type:varchar(256)"`
+	Description string    `json:"description" binding:"max=5000" gorm:"type:varchar"`
 	URL         string    `json:"url" binding:"required,url" gorm:"type:varchar(256);UNIQUE"`
 	Author      Person    `json:"author" binding:"required" gorm:"foreignkey:PersonID"`
 	PersonID    uint64    `json:"-"`

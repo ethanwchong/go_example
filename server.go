@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"videoproject/controller"
 	"videoproject/middleware"
 	"videoproject/repository"
 	"videoproject/service"
+	"videoproject/util"
 
 	"net/http"
 
@@ -33,10 +36,18 @@ func main() {
 	//close database connection
 	defer videoRepository.CloseDB()
 
-	//setupLogOutput()
+	//write GIN HTTP output to a log file so we can read stdout better
+	logfile, err := os.Create("./gin_http.log")
+	if err != nil {
+		fmt.Println("Could not create log file")
+	}
+	gin.SetMode(gin.DebugMode)
+	gin.DefaultWriter = io.MultiWriter(logfile)
+
 	server := gin.New()
 
 	//server.Use(gin.Recovery(), middleware.Logger(), middleware.BasicAuth(), gindump.Dump())
+
 	server.Use(gin.Recovery(), gin.Logger())
 
 	server.Static("/css", "./templates/css")
@@ -100,16 +111,21 @@ func main() {
 		viewRoutes.GET("/videos", videoController.ShowAll)
 	}
 
-	// We can setup this env variable from the EB console
-	port := os.Getenv("PORT")
-	// Elastic Beanstalk forwards requests to port 5000
+	config, err := util.LoadConfig(".")
+
+	fmt.Println(config)
+	if err != nil {
+		log.Fatal("cannot load configuration \n", err)
+	}
+
+	port := config.HttpPort
+
 	if port == "" {
 		port = "8080"
+		fmt.Printf("HTTPPORT not passed from env variable, using default %s \n", port)
 	}
 	server.Run(":" + port)
 
 	//server.Run("127.0.0.1:8080")
-
 	fmt.Println("Server is Running!")
-
 }

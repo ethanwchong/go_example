@@ -1,4 +1,4 @@
-package repository
+/*package repository
 
 import (
 	"videoproject/entity"
@@ -52,4 +52,4 @@ func (db *database) FindAll() []entity.Video {
 	var videos []entity.Video
 	db.connection.Set("gorm:auto_preload", true).Find(&videos)
 	return videos
-}
+}  */

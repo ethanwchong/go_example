@@ -13,7 +13,6 @@ type VideoService interface {
 }
 
 type videoService struct {
-	//videos []entity.Video
 	videoRepository repository.VideoRepository
 }
 
